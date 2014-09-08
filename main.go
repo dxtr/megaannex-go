@@ -521,7 +521,11 @@ func transfer_retrieve(key string, file string) bool {
 			if info.Size() == node.GetSize() {
 				fmt.Printf("TRANSFER-SUCCESS RETRIEVE %s\n", key)
 				return true
-			} else {
+			}
+
+			os.Remove(file)
+
+			if err != nil {
 				fmt.Printf("TRANSFER-FAILURE RETRIEVE %s %s\n", key, EFILE_EXISTS)
 				return false
 			}
