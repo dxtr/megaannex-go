@@ -147,8 +147,8 @@ func getDirHash(key string) string {
 	}
 }
 
-func getFullPath(key string) string {
-	return fmt.Sprintf("%s:/%s/%s%s", MEGA_ROOT, folder, getDirHash(key), key)
+func getFullPath(key string, dirhash string) string {
+	return fmt.Sprintf("%s:/%s/%s%s", MEGA_ROOT, folder, dirhash, key)
 }
 
 func getLookupParams(resource string, fs *gomega.MegaFS) (*gomega.Node, *[]string, error) {
@@ -286,7 +286,7 @@ func prepare(args []string) bool {
 		err = mega.Login(username, password)
 		if err != nil {
 			fail = true
-			failmsg = fmt.Sprintf("Couldn't log in! (Reason: %s)", err.Error())
+			failmsg = fmt.Sprintf("Couldn't log in! (%s)", err.Error())
 			fmt.Printf("PREPARE-FAILURE %s\n", failmsg)
 			return !fail
 		}
@@ -351,9 +351,8 @@ func getAvailability(args []string) bool {
 
 func checkPresent(args []string) bool {
 	hash := args[1]
-	//dirhash := getDirHash(hash)
 	//dir := fmt.Sprintf("%s/%s", folder, dirhash)
-	fullpath := getFullPath(hash)
+	fullpath := getFullPath(hash, getDirHash(hash))
 	root, pathsplit, err := getLookupParams(fullpath, mega.FS)
 	var nodes []*gomega.Node
 	//var node *gomega.Node
@@ -388,7 +387,7 @@ func transfer_store(key string, file string) bool {
 	var node *gomega.Node
 	var name string
 	dirhash := getDirHash(key)
-	fullpath := getFullPath(key)
+	fullpath := getFullPath(key, dirhash)
 	info, err := os.Stat(file)
 
 	if err != nil {
@@ -473,7 +472,7 @@ func transfer_store(key string, file string) bool {
 func transfer_retrieve(key string, file string) bool {
 	var nodes []*gomega.Node
 	var node *gomega.Node
-	fullpath := getFullPath(key)
+	fullpath := getFullPath(key, getDirHash(key))
 
 	root, pathsplit, err := getLookupParams(fullpath, mega.FS)
 	if err != nil {
@@ -549,8 +548,6 @@ func transfer_retrieve(key string, file string) bool {
 
 	fmt.Printf("TRANSFER-SUCCESS RETRIEVE %s\n", key)
 	return true
-
-	return true
 }
 
 func transfer(args []string) bool {
@@ -570,6 +567,8 @@ func transfer(args []string) bool {
 }
 
 func remove(args []string) bool {
+	key := args[1]
+	fmt.Printf("REMOVE-FAILURE %s Not implemented\n", key)
 	return true
 }
 
