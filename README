@@ -1,0 +1,37 @@
+About
+=====
+This is a drop-in replacement for megaannex. It should be compatible in every way except the initial environment variables
+
+This project makes use of https://github.com/t3rm1n4l/go-mega for the connection to mega.co.nz
+
+Installation
+============
+git clone https://github.com/dxtr/megaannex-go.git
+cd megaannex-go
+go build
+Rename megaannex-go to git-remote-annex-mega and copy it to your PATH
+
+Usage
+=====
+Init a remote:
+MEGA_USERNAME="<name>" MEGA_PASSWORD="<password>" git annex initremote <name> type=external externaltype=mega encryption=hybrid keyid=<keyid> mac=HMACSHA256 folder=Documents
+
+See the git-annex manual for more options
+
+Issues
+======
+Known issues:
+1. Removal of files is not working yet
+
+If you have found more issues please use the issue tracker at https://github.om/dxtr/megaannex-go
+
+TODO
+====
+1. Implement removal of files
+2. Create a Makefile?
+3. Clean up and reorganize the code
+4. Optimize what can be optimized
+
+License
+=======
+This program is released under the MIT license.
