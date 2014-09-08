@@ -18,7 +18,7 @@ const (
 	URL     = ""
 
 	MEGA_API_URL         = "https://eu.api.mega.co.nz"
-	MEGA_RETRIES         = 3
+	MEGA_RETRIES         = 5
 	MEGA_DOWNLOADWORKERS = 1
 	MEGA_UPLOADWORKERS   = 1
 	MEGA_TIMEOUT         = 30
