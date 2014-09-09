@@ -567,8 +567,39 @@ func transfer(args []string) bool {
 }
 
 func remove(args []string) bool {
+	var nodes []*mega.Node
+	var node *mega.Node
 	key := args[1]
-	fmt.Printf("REMOVE-FAILURE %s Not implemented\n", key)
+
+	root, pathsplit, err := getLookupParams(resource, mc.mega.FS)
+	if err != nil {
+		fmt.Printf("REMOVE-FAILURE %s %s\n", key, err)
+		return false
+	}
+
+	if len(*pathsplit) > 0 {
+		nodes, err = mc.mega.FS.PathLookup(root, *pathsplit)
+	} else { // The path doesn't exist, report it as a success?
+		fmt.Printf("REMOVE-SUCCESS %s\n", key)
+		return true
+	}
+
+	l := len(nodes)
+
+	if l == 0 { // Do we need this to make sure we don't destroy the root?
+		fmt.Printf("REMOVE-FAILURE %s Not enough nodes\n", key)
+		return false
+	}
+	node = nodes[len(nodes)-1]
+
+	mega.Delete(node, true)
+
+	fmt.Printf("REMOVE-SUCCESS %s\n", key)
+	return true
+}
+
+func getCost(args []string) bool {
+	fmt.Println("UNSUPPORTED-REQUEST")
 	return true
 }
 
@@ -578,7 +609,7 @@ var callbacks = map[string]callback{
 	"TRANSFER":        transfer,
 	"CHECKPRESENT":    checkPresent,
 	"REMOVE":          remove,
-	"GETCOST":         nil,
+	"GETCOST":         getCost,
 	"GETAVAILABILITY": getAvailability,
 }
 
