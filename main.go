@@ -567,18 +567,18 @@ func transfer(args []string) bool {
 }
 
 func remove(args []string) bool {
-	var nodes []*mega.Node
-	var node *mega.Node
+	var nodes []*gomega.Node
+	var node *gomega.Node
 	key := args[1]
-
-	root, pathsplit, err := getLookupParams(resource, mc.mega.FS)
+	fullpath := getFullPath(key, getDirHash(key))
+	root, pathsplit, err := getLookupParams(fullpath, mega.FS)
 	if err != nil {
 		fmt.Printf("REMOVE-FAILURE %s %s\n", key, err)
 		return false
 	}
 
 	if len(*pathsplit) > 0 {
-		nodes, err = mc.mega.FS.PathLookup(root, *pathsplit)
+		nodes, err = mega.FS.PathLookup(root, *pathsplit)
 	} else { // The path doesn't exist, report it as a success?
 		fmt.Printf("REMOVE-SUCCESS %s\n", key)
 		return true
