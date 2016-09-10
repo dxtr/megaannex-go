@@ -8,15 +8,17 @@ This project makes use of [go-mega](https://github.com/t3rm1n4l/go-mega) for the
 ## Prerequisites
 * Go
 * git-annex[^1]
+* go-mega
 
 [^1]: Not required to build the project
 
 ## Installation
+    go get github.com/t3rm1n4l/go-mega
     git clone https://github.com/dxtr/megaannex-go.git
     cd megaannex-go
     go build
 
-Then rename megaannex-go to git-remote-annex-mega and copy it to your PATH
+Then rename megaannex-go to git-annex-remote-mega and copy it to your PATH
 
 ## Usage
 Init a remote:
